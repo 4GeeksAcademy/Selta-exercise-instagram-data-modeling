@@ -7,23 +7,42 @@ from eralchemy2 import render_er
 
 Base = declarative_base()
 
-class Person(Base):
-    __tablename__ = 'person'
-    # Here we define columns for the table person
-    # Notice that each column is also a normal Python instance attribute.
-    id = Column(Integer, primary_key=True)
-    name = Column(String(250), nullable=False)
+class User (Base):
+    __tablename__ = 'User'
+    id = Column (Integer, primary_key=True)
+    user_name = Column(String(250), nullable=False)
+    email = Column(String(250), nullable=False)
+    phone_number = Column(Integer, nullable=False)
 
-class Address(Base):
-    __tablename__ = 'address'
-    # Here we define columns for the table address.
-    # Notice that each column is also a normal Python instance attribute.
-    id = Column(Integer, primary_key=True)
-    street_name = Column(String(250))
-    street_number = Column(String(250))
-    post_code = Column(String(250), nullable=False)
-    person_id = Column(Integer, ForeignKey('person.id'))
-    person = relationship(Person)
+class Followers (Base):
+    __tablename__ = 'Followers'
+    id = Column (Integer, primary_key=True)
+    from_user = Column(Integer, ForeignKey('User.id') )
+    to_user = Column(Integer, ForeignKey('User.id') )
+
+class Post (Base):
+    __tablename__ = 'Post'
+    id = Column (Integer, primary_key=True)
+    user_id = Column (Integer, ForeignKey('User.id'))
+    type = Column(String, nullable=False)
+
+class Comments (Base):
+    __tablename__ = 'Comments'
+    id = Column (Integer, primary_key=True)
+    email = Column(String(250), nullable=True)
+    post_id = Column (Integer, ForeignKey('Post.id'))
+    user_id = Column (Integer, ForeignKey('User.id'))
+    
+class Likes (Base):
+    __tablename__ = 'Likes'
+    id = Column (Integer, primary_key=True)
+    user_name = Column(String(250), nullable=False)
+    no_of_likes = Column(Integer, nullable=True)
+    user_id = Column (Integer, ForeignKey('User.id'))
+    post_id = Column (Integer, ForeignKey('Post.id'))
+
+
+
 
     def to_dict(self):
         return {}
